@@ -39,15 +39,15 @@ EONETSourcesURL = f"{apiBaseURL}/sources"
 
 def createOutputFiles(outputLocation="."):
     """
-        Attempts to write the GeoJSON and log files to "[outputLocation]/output" 
-        and "[outputLocation]/output/logs" respectively. Will create directories
-        if not already created.
+        Attempts to write the (GeoJSON + JSON) and log files to 
+        "[outputLocation]/output" and "[outputLocation]/output/logs" 
+        respectively. Will create directories if not already created.
             
         Input: File location to write output files to. Will use ".", the current
         location of the script, by default.
         
-        Output: Tuple of locations for empty GeoJSON file for GeoJSON data and 
-        empty log file for logging purposes
+        Output: Dict of locations for empty GeoJSON + JSON files for EONET data 
+        and empty log file for logging purposes
     """
     # Determine output folders
     outputFolder = f"{outputLocation}/output"
@@ -58,33 +58,38 @@ def createOutputFiles(outputLocation="."):
     Path(logFolder).mkdir(exist_ok=True)
     
     # Figure out file names to use
-    geoDataFileName, logFileName = determineFileName()
-    geoDataFile = f"{outputFolder}/{geoDataFileName}.geojson"
+    EONETFileName, logFileName = determineFileName()
+    EONETFilePrefix = f"{outputFolder}/{EONETFileName}"
+    eventsFile = f"{EONETFilePrefix}events.geojson"
+    categoriesFile = f"{EONETFilePrefix}categories.json"
+    sourcesFile = f"{EONETFilePrefix}sources.json"
     logFile = f"{logFolder}/{logFileName}.log"
     
     # Make files; error raised if already exists
-    Path(geoDataFile).touch(exist_ok=False)
-    Path(logFile).touch(exist_ok=False)
+    fileLocations = {"Events": eventsFile, "Categories": categoriesFile, 
+                     "Sources": sourcesFile, "Log": logFile}
+    for file in list(fileLocations.values()):
+        Path(file).touch(exist_ok=False)
     
     # Return locations for files
-    return (geoDataFile, logFile)
+    return fileLocations
 
 def determineFileName():
     """
-        Determines the file name to use when writing the GeoJSON data to a file.
-        Standard is "[date]_[time]_eonet_data", where [date] is "DD-MM-YYYY" and 
-        [time] is "HH-MM-SS". Example: "21-04-2023_15-17-44_eonet_data". Logs
-        also use the same file name format, example: "21-04-2023_15-17-44_log".
+        Determines the file name to use when writing the EONET data to a file.
+        Standard is "[date]_[time]_eonet_", where [date] is "DD-MM-YYYY" and 
+        [time] is "HH-MM-SS". Example: "21-04-2023_15-17-44_eonet_". Logs
+        also use a similar file name format, example: "21-04-2023_15-17-44_log".
         
         Returns: Tuple of standardized file names based on current date and time
-        for the GeoJSON and log files
+        for the EONET and log files
     """
     # Grab current date and time and determine filenames
     currentDateTime = datetime.now()
     prefixFileName = currentDateTime.strftime("%d-%m-%Y_T%H-%M-%S_")
-    geoFileName = prefixFileName + "eonet_data"
+    EONETFileName = prefixFileName + "eonet_"
     logFileName = prefixFileName + "log"
-    return (geoFileName, logFileName)
+    return (EONETFileName, logFileName)
 
 def setupLogging(logFile):
     """
@@ -106,27 +111,20 @@ def parseJSONData(jsonData):
     """
     pass
 
-def requestEONETData(tryTimes = 3, pauseTime = 3, getCategories = False, 
-                     getSources = False):
+def requestEONETData(tryTimes = 3, pauseTime = 3):
     """
         Requests EONET data from NASA using NASA's EONET API. Will attempt 3
         times in total by default to get data, 3 seconds by default between each
-        request. Grabs Events, skips Categories and Sources by default since 
-        they rarely change
+        request. Grabs Events, Categories, and Sources
         
         Input: Positive integer tryTimes for capping number of requests, 
-        positive float pauseTime for # of seconds to wait between each request,
-        Bool getCategories and getSources to denote whether they should be 
-        grabbed
+        positive float pauseTime for # of seconds to wait between each request
         
-        Output: List of dicts containing EONET data in GeoJSON format
+        Output: List of dicts containing EONET data in GeoJSON + JSON format
     """
     # Determine list of tuples of URLs to try
-    listURLs = [("Events", EONETEventsURL)]
-    if getCategories:
-        listURLs += [("Categories", EONETCategoriesURL)]
-    if getSources:
-        listURLs += [("Sources", EONETSourcesURL)]
+    listURLs = [("Events", EONETEventsURL), ("Categories", EONETCategoriesURL), 
+                ("Sources", EONETSourcesURL)]
         
     # Go through URL list and attempt to request JSON data from each
     jsonData = {}
@@ -134,6 +132,7 @@ def requestEONETData(tryTimes = 3, pauseTime = 3, getCategories = False,
         logging.info(f"Requesting {typeURL} at {URL}")
         responseData = requestHTTPJSON(URL, tryTimes, pauseTime)
         jsonData[typeURL] = responseData
+        time.sleep(1) # Wait a second between each successful retrieval
     
     return jsonData
         
@@ -167,27 +166,46 @@ def requestHTTPJSON(URL, tryTimes, pauseTime):
         response.raise_for_status()
     return response.json()
            
+def writeEONETData(fileLocations, EONETData):
+    """
+        Attempts to write the data stored in EONETData into their respective
+        empty files, the locations of which are specified in fileLocations
+        
+        Input: Dict with type of EONET data and their respective file location
+        called fileLocations, and a dict of each type of EONET data with the 
+        associated data for each
+        
+        Output: None as the data should be successfully written to each datum's
+        respective file
+    """
+    # Write EONET data to each associated file
+    for typeData in EONETData:
+        
+        # Serialize data to JSON
+        jsonData = json.dumps(EONETData[typeData], indent=4)
+        
+        with open(fileLocations[typeData], "w") as outFile:
+            outFile.write(jsonData)
+           
 ## MAIN
 if __name__ == "__main__":
 
     try:
         
         # Set up output files to check if outputs can be written without issue
-        geoDataFile, logFile = createOutputFiles()
+        fileLocations = createOutputFiles()
         
         # Initialize logging
-        setupLogging(logFile)
+        setupLogging(fileLocations["Log"])
         logging.info('Main logger initialized')
         
         # Request EONET data
         logging.info('Requesting EONET data')
-        EONETData = requestEONETData() # Requests EONET data as a GeoJSON file
+        EONETData = requestEONETData()
         
-        # Parse EONET data
-        logging.info('Parsing JSON data')
-        
-        # Attempt to write GeoJSON data
-        pass
+        # Attempt to write GeoJSON + JSON data
+        logging.info('Writing EONET data to respective files')
+        writeEONETData(fileLocations, EONETData)
         
         # Display number of events and disasters parsed + if any were skipped
         pass
