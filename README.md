@@ -1,9 +1,13 @@
 <h3 align="center">EONET Event Visualizer</h3>
 
+<div align="center">
+
 ![Version](https://img.shields.io/badge/version-0.1-blue.svg?cacheSeconds=2592000)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 [![python](https://img.shields.io/badge/python-3.10.4-blue.svg?logo=python&labelColor=yellow)](https://www.python.org/downloads/)
 [![platform](https://img.shields.io/badge/platform-osx%2Flinux%2Fwindows-green.svg)](https://github.com/marcgallard/EONETEventVisualizer)
+
+</div>
 
 <p align="center">
 The EONET Event Visualizer visualizes natural events and disasters on a global level using Tableau
@@ -11,12 +15,11 @@ The EONET Event Visualizer visualizes natural events and disasters on a global l
 
 ## About EONET Event Visualizer
 
-EONET's geospatial data is first pulled using the EONET API, after which the data is parsed into a GeoJSON format using Python. Tableau is then used to visualize the data for an interactive dashboard experience. Note that the GeoJSON data is static once parsed; one possible improvement is for the Tableau viz to have a live connection to a server it can pull updated data from (such as having a server Tableau can connect to that updates a local DB after running the Python script on a scheduled basis).
+EONET's geospatial data is first pulled using the EONET API, after which the data is parsed into a GeoJSON format using Python. Tableau is then used to visualize the data for an interactive dashboard experience. Note that the GeoJSON data is static once parsed; one possible improvement is for the Tableau viz to have a live connection to a server it can pull updated data from (such as having a server Tableau can connect to that has a local DB Tableau can pull from).
 
 ## Prerequisites
 
 - `geojson` for parsing JSON data into a format Tableau accepts
-- `json` for parsing data from the API call
 - `pip` to make installation of argparse and jsonschema easy
 - `Python 3.10.4` (version used for this project)
 - `requests` for making API calls to EONET
