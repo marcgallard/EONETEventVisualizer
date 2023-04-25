@@ -1,0 +1,5 @@
+2023-04-24 22:06:02,246 INFO     [homogenizeEvents.py:function <module>:235] - Main logger initialized
+2023-04-24 22:06:02,246 INFO     [homogenizeEvents.py:function <module>:238] - Reading in data
+2023-04-24 22:06:02,258 INFO     [homogenizeEvents.py:function <module>:242] - Parsing read EONET data
+2023-04-24 22:06:02,283 INFO     [homogenizeEvents.py:function <module>:249] - Writing homogenized EONET data to respective files
+2023-04-24 22:06:02,351 INFO     [homogenizeEvents.py:function <module>:253] - Data successfully parsed and homogenized

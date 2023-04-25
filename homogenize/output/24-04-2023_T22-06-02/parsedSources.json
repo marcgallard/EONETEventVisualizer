@@ -1,0 +1,126 @@
+{
+    "AVO": {
+        "title": "Alaska Volcano Observatory",
+        "source": "https://www.avo.alaska.edu/"
+    },
+    "ABFIRE": {
+        "title": "Alberta Wildfire",
+        "source": "https://wildfire.alberta.ca/"
+    },
+    "AU_BOM": {
+        "title": "Australia Bureau of Meteorology",
+        "source": "http://www.bom.gov.au/"
+    },
+    "BYU_ICE": {
+        "title": "Brigham Young University Antarctic Iceberg Tracking Database",
+        "source": "http://www.scp.byu.edu/data/iceberg/database1.html"
+    },
+    "BCWILDFIRE": {
+        "title": "British Columbia Wildfire Service",
+        "source": "http://bcwildfire.ca/"
+    },
+    "CALFIRE": {
+        "title": "California Department of Forestry and Fire Protection",
+        "source": "http://www.calfire.ca.gov/"
+    },
+    "CEMS": {
+        "title": "Copernicus Emergency Management Service",
+        "source": "http://emergency.copernicus.eu/"
+    },
+    "EO": {
+        "title": "Earth Observatory",
+        "source": "http://earthobservatory.nasa.gov/"
+    },
+    "FEMA": {
+        "title": "Federal Emergency Management Agency (FEMA)",
+        "source": "https://www.fema.gov/"
+    },
+    "FloodList": {
+        "title": "FloodList",
+        "source": "http://floodlist.com/"
+    },
+    "GDACS": {
+        "title": "Global Disaster Alert and Coordination System",
+        "source": "http://www.gdacs.org/"
+    },
+    "GLIDE": {
+        "title": "GLobal IDEntifier Number (GLIDE)",
+        "source": "http://www.glidenumber.net/"
+    },
+    "InciWeb": {
+        "title": "InciWeb",
+        "source": "https://inciweb.nwcg.gov/"
+    },
+    "IDC": {
+        "title": "International Charter on Space and Major Disasters",
+        "source": "https://www.disasterscharter.org/"
+    },
+    "JTWC": {
+        "title": "Joint Typhoon Warning Center",
+        "source": "http://www.metoc.navy.mil/jtwc/jtwc.html"
+    },
+    "MRR": {
+        "title": "LANCE Rapid Response",
+        "source": "https://lance.modaps.eosdis.nasa.gov/cgi-bin/imagery/gallery.cgi"
+    },
+    "MBFIRE": {
+        "title": "Manitoba Wildfire Program",
+        "source": "http://www.gov.mb.ca/sd/fire/Fire-Maps/"
+    },
+    "NASA_ESRS": {
+        "title": "NASA Earth Science and Remote Sensing Unit",
+        "source": "https://eol.jsc.nasa.gov/ESRS/"
+    },
+    "NASA_DISP": {
+        "title": "NASA Earth Science Disasters Program",
+        "source": "https://disasters.nasa.gov/"
+    },
+    "NASA_HURR": {
+        "title": "NASA Hurricane And Typhoon Updates",
+        "source": "https://blogs.nasa.gov/hurricanes/"
+    },
+    "NOAA_NHC": {
+        "title": "National Hurricane Center",
+        "source": "https://www.nhc.noaa.gov/"
+    },
+    "NOAA_CPC": {
+        "title": "NOAA Center for Weather and Climate Prediction",
+        "source": "http://www.cpc.ncep.noaa.gov/"
+    },
+    "PDC": {
+        "title": "Pacific Disaster Center",
+        "source": "http://www.pdc.org/"
+    },
+    "ReliefWeb": {
+        "title": "ReliefWeb",
+        "source": "http://reliefweb.int/"
+    },
+    "SIVolcano": {
+        "title": "Smithsonian Institution Global Volcanism Program",
+        "source": "http://www.volcano.si.edu/"
+    },
+    "NATICE": {
+        "title": "U.S. National Ice Center",
+        "source": "http://www.natice.noaa.gov/Main_Products.htm"
+    },
+    "UNISYS": {
+        "title": "Unisys Weather",
+        "source": "http://weather.unisys.com/hurricane/"
+    },
+    "USGS_EHP": {
+        "title": "USGS Earthquake Hazards Program",
+        "source": "https://earthquake.usgs.gov/"
+    },
+    "USGS_CMT": {
+        "title": "USGS Emergency Operations Collection Management Tool",
+        "source": "https://cmt.usgs.gov/"
+    },
+    "HDDS": {
+        "title": "USGS Hazards Data Distribution System",
+        "source": "https://hddsexplorer.usgs.gov/"
+    },
+    "DFES_WA": {
+        "title": "Western Australia Department of Fire and Emergency Services",
+        "source": "https://www.dfes.wa.gov.au/"
+    }
+}

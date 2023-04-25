@@ -1,0 +1,13 @@
+2023-04-24 21:50:44,412 INFO     [pullData.py:function <module>:190] - Main logger initialized
+2023-04-24 21:50:44,412 INFO     [pullData.py:function <module>:193] - Requesting EONET data
+2023-04-24 21:50:44,413 INFO     [pullData.py:function requestEONETData:122] - Requesting Events at https://eonet.gsfc.nasa.gov/api/v3/events/geojson
+2023-04-24 21:50:44,415 DEBUG    [connectionpool.py:function _new_conn:1003] - Starting new HTTPS connection (1): eonet.gsfc.nasa.gov:443
+2023-04-24 21:50:46,119 DEBUG    [connectionpool.py:function _make_request:456] - https://eonet.gsfc.nasa.gov:443 "GET /api/v3/events/geojson HTTP/1.1" 200 None
+2023-04-24 21:50:47,846 INFO     [pullData.py:function requestEONETData:122] - Requesting Categories at https://eonet.gsfc.nasa.gov/api/v3/categories
+2023-04-24 21:50:47,848 DEBUG    [connectionpool.py:function _new_conn:1003] - Starting new HTTPS connection (1): eonet.gsfc.nasa.gov:443
+2023-04-24 21:50:48,409 DEBUG    [connectionpool.py:function _make_request:456] - https://eonet.gsfc.nasa.gov:443 "GET /api/v3/categories HTTP/1.1" 200 4449
+2023-04-24 21:50:49,416 INFO     [pullData.py:function requestEONETData:122] - Requesting Sources at https://eonet.gsfc.nasa.gov/api/v3/sources
+2023-04-24 21:50:49,417 DEBUG    [connectionpool.py:function _new_conn:1003] - Starting new HTTPS connection (1): eonet.gsfc.nasa.gov:443
+2023-04-24 21:50:49,985 DEBUG    [connectionpool.py:function _make_request:456] - https://eonet.gsfc.nasa.gov:443 "GET /api/v3/sources HTTP/1.1" 200 6234
+2023-04-24 21:50:51,000 INFO     [pullData.py:function <module>:199] - Writing EONET data to respective files
+2023-04-24 21:50:51,046 INFO     [pullData.py:function <module>:203] - Data successfully grabbed

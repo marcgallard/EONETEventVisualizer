@@ -15,12 +15,19 @@ The EONET Event Visualizer visualizes natural events and disasters on a global l
 
 ## About EONET Event Visualizer
 
-EONET's geospatial data is first pulled using the EONET API, after which the data is parsed into a GeoJSON format using Python. Tableau is then used to visualize the data for an interactive dashboard experience. Note that the GeoJSON data is static once parsed; one possible improvement is for the Tableau viz to have a live connection to a server it can pull updated data from (such as having a server Tableau can connect to that has a local DB Tableau can pull from).
+EONET's geospatial data is first pulled using the EONET API, after which the data is written into json and geojson files using Python. Tableau is then used to visualize the data for an interactive dashboard experience. Note that the GeoJSON data is static once parsed; one possible improvement is for the Tableau viz to have a live connection to a server it can pull updated data from (such as having a server Tableau can connect to that has a local DB Tableau can pull from).
+
+The script requests EONET data up to 3 times, 3 second delay between each request by default. If the first request is successful then the other two won't be attempted. Also note that the EONET API has a strict rate-limit; more info can be found on NASA's [API documentation](https://api.nasa.gov/) website.
+
+One limitation of this project is that Tableau currently does not support MixedGeometry. If the EONET data contains a mix of different geometries (Point and LineString as one example), an additional script called "homogenizeEvents.py" will attempt to make all events of type "Point"; further details can be found in the script's README found in folder "./homogenize".
+
+## Visualization
+
+Please check out my Tableau Public visualization! Here's the link: [https://public.tableau.com/app/profile/marco.gallardo/viz/4-24-23_EONET_Data_Visualized/Dashboard1](https://public.tableau.com/app/profile/marco.gallardo/viz/4-24-23_EONET_Data_Visualized/Dashboard1)
 
 ## Prerequisites
 
-- `geojson` for parsing JSON data into a format Tableau accepts
-- `pip` to make installation of argparse and jsonschema easy
+- `pip 23.1` to make installation of argparse and jsonschema easy
 - `Python 3.10.4` (version used for this project)
 - `requests` for making API calls to EONET
 - (if running on own) Tableau account to create an interactive dashboard (a public visualization will also be available on my personal profile)
@@ -29,21 +36,19 @@ EONET's geospatial data is first pulled using the EONET API, after which the dat
 
 Clone the repo: `git clone https://github.com/marcgallard/EONETEventVisualizer.git`
 
-Install pip to help install geojson and requests (I recommend following [this guide](https://packaging.python.org/en/latest/tutorials/installing-packages/#ensure-you-can-run-pip-from-the-command-line))
+Install pip to help install requests (I recommend following [this guide](https://packaging.python.org/en/latest/tutorials/installing-packages/#ensure-you-can-run-pip-from-the-command-line))
 
 Then run
-
-    pip install geojson    
-    
-to install geojson, and
     
     pip install requests
     
 to install requests.
 
 ## Running main script
-
-TO-DO
+    
+    py pullData.py
+    
+Output is stored in a time-based folder within the folder './output'. If data needs to be homogenized to Point geometry only then run `homogenizeEvents.py` under the 'homogenize' folder (limitations apply).
 
 ## Copyright and license
 

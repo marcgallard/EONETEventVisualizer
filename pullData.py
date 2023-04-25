@@ -2,26 +2,26 @@
     Description: Requests the latest natural events and disasters using NASA's
     EONET API. Script also requests Categories and Sources' JSON for 
     presentation purposes. Once requested, EONET will attempt to return the info 
-    in GeoJSON format if the rate limit has not been reached, after which the 
-    script parses the info. The info is then written to a local folder at the 
-    script's location called "output". The file's name is standardized according 
-    to when the data was pulled (refer to "determineFileName" function for more 
-    details).
+    in GeoJSON format if the rate limit has not been reached. The info is then 
+    written to a local folder at the script's location called 
+    "./output/[dateTime]", where dateTime is standardized according to date and 
+    time script was run. The folder's name is standardized according to when the 
+    data was pulled (refer to "determineFileName" function for more details).
     
     Any errors are written to a log file for post review; logs are stored in 
     "./output/logs".
 
     Input: None (This could be changed to accept script arguments for defining
-    where to write the file and if the user would like to pull from specific
-    sources)
+    where to write the file and if the user would like to pass parameters to the 
+    HTTP requests)
 
-    Output: GeoJSON file containing EONET info to later be uploaded to Tableau; 
-    file located in "./output" folder. Logs stored in "./output/logs" folder
+    Output: GeoJSON + JSON files containing EONET info; files located in 
+    "./output" folder. Logs stored in "./output/logs" folder. Files are either
+    "log", "events", "categories", or "sources" (excluding file extension)
 """
 
 ## IMPORTS
 from datetime import datetime # For standardizing filenames
-import geojson # For transforming JSON data into GeoJSON
 import json # For parsing data from the API call
 import logging # For logging purposes
 from pathlib import Path # For making directories and files
@@ -39,31 +39,30 @@ EONETSourcesURL = f"{apiBaseURL}/sources"
 
 def createOutputFiles(outputLocation="."):
     """
-        Attempts to write the (GeoJSON + JSON) and log files to 
-        "[outputLocation]/output" and "[outputLocation]/output/logs" 
-        respectively. Will create directories if not already created.
+        Attempts to write the GeoJSON, JSON, and log files to 
+        "[outputLocation]/output/[folderName]", where [folderName] is determined 
+        from "determineFolderName". Will create directories if not already 
+        created.
             
-        Input: File location to write output files to. Will use ".", the current
-        location of the script, by default.
+        Input: Folder location to write output files to. Will use ".", the 
+        current location of the script, by default.
         
-        Output: Dict of locations for empty GeoJSON + JSON files for EONET data 
-        and empty log file for logging purposes
+        Output: Dict of locations for empty GeoJSON + JSON + log files
     """
-    # Determine output folders
-    outputFolder = f"{outputLocation}/output"
-    logFolder = f"{outputFolder}/logs"
+    # Determine and create output folder
+    folderName = determineFolderName()
+    outputRoot = f"{outputLocation}/output"
+    outputFolder = f"{outputRoot}/{folderName}"
     
-    # Create associated directories if not already created
-    Path(outputFolder).mkdir(exist_ok=True)
-    Path(logFolder).mkdir(exist_ok=True)
+    # Make root output folder and time-based folder
+    Path(outputRoot).mkdir(exist_ok=True)
+    Path(outputFolder).mkdir(exist_ok=False) # Folder should not already exist
     
     # Figure out file names to use
-    EONETFileName, logFileName = determineFileName()
-    EONETFilePrefix = f"{outputFolder}/{EONETFileName}"
-    eventsFile = f"{EONETFilePrefix}events.geojson"
-    categoriesFile = f"{EONETFilePrefix}categories.json"
-    sourcesFile = f"{EONETFilePrefix}sources.json"
-    logFile = f"{logFolder}/{logFileName}.log"
+    eventsFile = f"{outputFolder}/events.geojson"
+    categoriesFile = f"{outputFolder}/categories.json"
+    sourcesFile = f"{outputFolder}/sources.json"
+    logFile = f"{outputFolder}/log.log"
     
     # Make files; error raised if already exists
     fileLocations = {"Events": eventsFile, "Categories": categoriesFile, 
@@ -74,22 +73,19 @@ def createOutputFiles(outputLocation="."):
     # Return locations for files
     return fileLocations
 
-def determineFileName():
+def determineFolderName():
     """
-        Determines the file name to use when writing the EONET data to a file.
-        Standard is "[date]_[time]_eonet_", where [date] is "DD-MM-YYYY" and 
-        [time] is "HH-MM-SS". Example: "21-04-2023_15-17-44_eonet_". Logs
-        also use a similar file name format, example: "21-04-2023_15-17-44_log".
+        Determines the folder name to use when writing the EONET and log data to 
+        files. Standard is "DD-MM-YYYY_HH-MM-SS". 
+        Example: "21-04-2023_15-17-44".
         
-        Returns: Tuple of standardized file names based on current date and time
-        for the EONET and log files
+        Returns: String of standardized folder name based on current date and 
+        time
     """
-    # Grab current date and time and determine filenames
+    # Grab current date and time and determine folder name
     currentDateTime = datetime.now()
-    prefixFileName = currentDateTime.strftime("%d-%m-%Y_T%H-%M-%S_")
-    EONETFileName = prefixFileName + "eonet_"
-    logFileName = prefixFileName + "log"
-    return (EONETFileName, logFileName)
+    folderName = currentDateTime.strftime("%d-%m-%Y_T%H-%M-%S")
+    return folderName
 
 def setupLogging(logFile):
     """
@@ -105,11 +101,6 @@ def setupLogging(logFile):
                      "%(funcName)s:%(lineno)d] - %(message)s")
     logging.basicConfig(filename=logFile, filemode="w", level=logging.DEBUG, 
                         format=logFormatting)
-
-def parseJSONData(jsonData):
-    """
-    """
-    pass
 
 def requestEONETData(tryTimes = 3, pauseTime = 3):
     """
@@ -173,7 +164,7 @@ def writeEONETData(fileLocations, EONETData):
         
         Input: Dict with type of EONET data and their respective file location
         called fileLocations, and a dict of each type of EONET data with the 
-        associated data for each
+        associated data for each called EONETData
         
         Output: None as the data should be successfully written to each datum's
         respective file
@@ -201,14 +192,18 @@ if __name__ == "__main__":
         
         # Request EONET data
         logging.info('Requesting EONET data')
+        print("\nRequesting EONET data...")
         EONETData = requestEONETData()
+        print("Data grabbed!")
         
         # Attempt to write GeoJSON + JSON data
         logging.info('Writing EONET data to respective files')
         writeEONETData(fileLocations, EONETData)
         
-        # Display number of events and disasters parsed + if any were skipped
-        pass
+        # Successful run
+        logging.info('Data successfully grabbed')
+        print("EONET data was successfully saved; refer to 'output' folder for"
+              " data.\n\nExiting script")
 
     except Exception as error:
         logging.exception("Traceback of error:")

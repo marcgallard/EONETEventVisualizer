@@ -1,0 +1,54 @@
+{
+    "drought": {
+        "title": "Drought",
+        "description": "Long lasting absence of precipitation affecting agriculture and livestock, and the overall availability of food and water."
+    },
+    "dustHaze": {
+        "title": "Dust and Haze",
+        "description": "Related to dust storms, air pollution and other non-volcanic aerosols. Volcano-related plumes shall be included with the originating eruption event."
+    },
+    "earthquakes": {
+        "title": "Earthquakes",
+        "description": "Related to all manner of shaking and displacement. Certain aftermath of earthquakes may also be found under landslides and floods."
+    },
+    "floods": {
+        "title": "Floods",
+        "description": "Related to aspects of actual flooding--e.g., inundation, water extending beyond river and lake extents."
+    },
+    "landslides": {
+        "title": "Landslides",
+        "description": "Related to landslides and variations thereof: mudslides, avalanche."
+    },
+    "manmade": {
+        "title": "Manmade",
+        "description": "Events that have been human-induced and are extreme in their extent."
+    },
+    "seaLakeIce": {
+        "title": "Sea and Lake Ice",
+        "description": "Related to all ice that resides on oceans and lakes, including sea and lake ice (permanent and seasonal) and icebergs."
+    },
+    "severeStorms": {
+        "title": "Severe Storms",
+        "description": "Related to the atmospheric aspect of storms (hurricanes, cyclones, tornadoes, etc.). Results of storms may be included under floods, landslides, etc."
+    },
+    "snow": {
+        "title": "Snow",
+        "description": "Related to snow events, particularly extreme/anomalous snowfall in either timing or extent/depth."
+    },
+    "tempExtremes": {
+        "title": "Temperature Extremes",
+        "description": "Related to anomalous land temperatures, either heat or cold."
+    },
+    "volcanoes": {
+        "title": "Volcanoes",
+        "description": "Related to both the physical effects of an eruption (rock, ash, lava) and the atmospheric (ash and gas plumes)."
+    },
+    "waterColor": {
+        "title": "Water Color",
+        "description": "Related to events that alter the appearance of water: phytoplankton, red tide, algae, sediment, whiting, etc."
+    },
+    "wildfires": {
+        "title": "Wildfires",
+        "description": "Wildfires includes all nature of fire, including forest and plains fires, as well as urban and industrial fire events. Fires may be naturally caused or manmade."
+    }
+}
